@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+
+    server:
+        container_name: mongection_app
+        image: 10.14.0.97:5500/mongection/app:training-v1.0.0
+        environment:
+            DBUSER: mongection
+            DBPASS: mongection
+        ports:
+            - "10001:10001"
+        labels:
+            - "app=mongection"
+        networks:
+            - a1net
+        depends_on:
+            - mongo
+        external_links:
+            - mongo:mongo
+        restart: always
+
+    mongo:
+        container_name: mongection_db
+        image: 10.14.0.97:5500/mongection/db-mongo:training-v1.0.0
+        ports:
+            - "27017:27017"
+        labels:
+            - "app=mongection"
+        volumes:
+            - "/var/mongection/data/db:/data/db"
+        networks:
+            - a1net
+
+networks:
+    a1net:
